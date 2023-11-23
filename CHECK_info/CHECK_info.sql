@@ -6,14 +6,14 @@ FROM USER_CONS_COLUMNS NATURAL JOIN USER_CONSTRAINTS
 WHERE CONSTRAINT_TYPE = 'C'
 AND REGEXP_SUBSTR(SEARCH_CONDITION_VC, '.*IS NOT NULL') IS NULL),
 RANK_TABLE AS
-(SELECT DISTINCT  TABLE_NAME  "Название таблицы", CONSTRAINT_NAME AS "Имя ограничения",
- LTRIM(SYS_CONNECT_BY_PATH(COLUMN_NAME, ', '), ', ') AS "Столбцы, входящие в ограниение",
-SEARCH_CONDITION_VC AS "Ограничение CHECK",
+(SELECT DISTINCT  TABLE_NAME  "Название таблицы", CONSTRAINT_NAME AS "Constraint name",
+ LTRIM(SYS_CONNECT_BY_PATH(COLUMN_NAME, ', '), ', ') AS "Columns included in constraint",
+SEARCH_CONDITION_VC AS "Constraint CHECK",
 ROW_NUMBER() OVER (PARTITION BY TABLE_NAME ORDER BY CONSTRAINT_NAME) AS R
 FROM CHECK_CONS
 WHERE CONNECT_BY_ISLEAF = 1
 START WITH RN = 1
 CONNECT BY PRIOR RN + 1 = RN AND PRIOR CONSTRAINT_NAME = CONSTRAINT_NAME AND PRIOR TABLE_NAME = TABLE_NAME)
 
-SELECT CASE WHEN R = 1 THEN "Название таблицы" ELSE ' ' END "Название таблицы", "Имя ограничения", "Столбцы, входящие в ограниение", "Ограничение CHECK"
+SELECT CASE WHEN R = 1 THEN "Table name" ELSE ' ' END "Table name", "Constraint name", "Columns included in constraint", "Constraint CHECK"
 FROM RANK_TABLE;

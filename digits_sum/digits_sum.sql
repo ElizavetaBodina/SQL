@@ -21,7 +21,7 @@ SUM_NUM (STR, SUM) AS (
   FROM SUM_NUM
   WHERE LENGTH(SUM) > 1
 )
-SELECT NVL(STR, ' ') AS "Исходная строка", NVL(TO_NUMBER(SUM), 0) AS "Результат"
+SELECT NVL(STR, ' ') AS "Source string", NVL(TO_NUMBER(SUM), 0) AS "Result"
 FROM SUM_NUM
 WHERE LENGTH(SUM) = 1;
 

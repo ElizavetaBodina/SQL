@@ -24,7 +24,7 @@ SELECT CASE WHEN TO_CHAR(F_DATE, 'SYYYY') > 0 THEN
   || TO_CHAR(S,'SYYYY')
   || ' '
   || TO_CHAR(S - 5,'fmday','NLS_DATE_LANGUAGE=AMERICAN') 
-  END "Календарь"
+  END "Calendar"
 FROM
   (SELECT F_DATE, TRUNC(F_DATE,'MONTH')+ LEVEL - 1 S
   FROM DD_LIST
